@@ -1,29 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+dotenv.config();
 const cors = require('cors');
-const path = require('path');
+
 const authRoutes = require('./routes/authRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const newsRoutes = require('./routes/newsRoutes');
-const app = express();
 
+
+const app = express();
 app.use(cors());
-dotenv.config();
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/',(req,res)=>{
-  res.json({message : "running good"})
-})
+app.get('/', (req, res) => {
+  res.json({ message: "Server is running fine!" });
+});
 
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/news', newsRoutes);
 
+// Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => app.listen(process.env.PORT || 5000))
-  .catch(err => console.error(err));
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(process.env.PORT || 5000, () =>
+      console.log(`Server running on port ${process.env.PORT || 5000}`)
+    );
+  })
+  .catch(err => console.error("MongoDB connection failed:", err));

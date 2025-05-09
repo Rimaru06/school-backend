@@ -6,7 +6,7 @@ const User = require('./models/User');
 
 const createAdmin = async () => {
   try {
-    await mongoose.connect("mongo uri");
+    await mongoose.connect(process.env.MONGO_URI);
 
     const existingAdmin = await User.findOne({ email: 'admin@school.com' });
     if (existingAdmin) {

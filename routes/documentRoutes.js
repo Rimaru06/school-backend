@@ -2,9 +2,21 @@ const router = require('express').Router();
 const { uploadDocument, getDocuments } = require('../controllers/documentController');
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
 
-router.post('/upload', auth, roleCheck('admin', 'faculty'), upload.single('file'), uploadDocument);
+// Cloudinary & Multer config
+const multer = require('multer');
+const { storage } = require("../utils/cloudinary"); // Cloudinary disk storage engine
+const upload = multer({ storage });
+
+// Routes
+router.post(
+  '/upload',
+  auth,
+  roleCheck('admin', 'faculty'),
+  upload.single('file'), // 'file' should match frontend FormData key
+  uploadDocument
+);
+
 router.get('/', getDocuments);
+
 module.exports = router;
