@@ -13,6 +13,10 @@ dotenv.config();
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+app.get('/',(req,res)=>{
+  res.json({message : "running good"})
+})
+
 app.use('/api/auth', authRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/documents', documentRoutes);
