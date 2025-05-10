@@ -9,9 +9,19 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "school-documents",
-    allowed_formats: ["pdf", "doc", "docx", "jpg", "jpeg", "png"],
+  params: async (req, file) => {
+    const originalName = file.originalname;
+    const ext = originalName.split(".").pop().toLowerCase();
+    const filename = originalName.replace(/\.[^/.]+$/, ""); // remove extension
+
+    const isDoc = ["pdf", "doc", "docx"].includes(ext);
+
+    return {
+      folder: "school-documents",
+      resource_type: isDoc ? "raw" : "image",
+      public_id: `${filename}.${ext}`, // 🔥 keep original extension in URL
+      format: ext,
+    };
   },
 });
 

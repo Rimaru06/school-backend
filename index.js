@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const newsRoutes = require('./routes/newsRoutes');
+const MandatoryRoute = require('./routes/MandatoryRoute');
 
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/api/mandatory', MandatoryRoute);
 
 // Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
