@@ -32,3 +32,16 @@ exports.getMandatoryDocuments = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch documents." });
   }
 };
+exports.deleteMandatoryDocument = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doc = await Mandatory.findByIdAndDelete(id);
+    if (!doc) {
+      return res.status(404).json({ error: "Document not found." });
+    }
+    res.json({ message: "Document deleted successfully." });
+  } catch (err) {
+    console.error("Delete Error:", err);
+    res.status(500).json({ error: "Failed to delete document." });
+  }
+};

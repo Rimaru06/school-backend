@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { uploadDocument, getDocuments } = require('../controllers/documentController');
+const { uploadDocument, getDocuments , deleteDocument } = require('../controllers/documentController');
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
@@ -18,5 +18,13 @@ router.post(
 );
 
 router.get('/', getDocuments);
+
+router.delete(
+  '/:id',
+  auth,
+  roleCheck('admin', 'faculty'),
+  deleteDocument
+);
+
 
 module.exports = router;

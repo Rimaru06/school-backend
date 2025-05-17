@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { uploadPhoto, getPhotos } = require('../controllers/galleryController');
+const { uploadPhoto, getPhotos , deletePhoto } = require('../controllers/galleryController');
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
@@ -17,5 +17,12 @@ router.post(
 );
 
 router.get('/', getPhotos);
+
+router.delete(
+  '/:id',
+  auth,
+  roleCheck('admin', 'faculty'),
+  deletePhoto
+);
 
 module.exports = router;

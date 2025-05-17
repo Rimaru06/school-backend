@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { uploadMandatoryDocument, getMandatoryDocuments } = require('../controllers/Mandatory');
+const { uploadMandatoryDocument, getMandatoryDocuments , deleteMandatoryDocument } = require('../controllers/Mandatory');
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
@@ -18,5 +18,12 @@ router.post(
 );
 
 router.get('/', getMandatoryDocuments);
+
+router.delete(
+  '/:id',
+  auth,
+  roleCheck('admin', 'faculty'),
+  deleteMandatoryDocument
+);
 
 module.exports = router;
